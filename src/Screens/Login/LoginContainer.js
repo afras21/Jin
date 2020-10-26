@@ -2,7 +2,7 @@
  * LoginContainer
  */
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, AsyncStorage } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { withNavigation, NavigationEvents } from "react-navigation";
 import {login} from '../../Services/authService'
@@ -20,9 +20,19 @@ class LoginContainer extends React.Component {
     async login() {
         const userData = await login(this.state);
         if(userData.isAuth) {
+            console.log(userData);
+            this.setUserToken(userData);
             alert('LoggedIn Successfully')
+        } else {
+            alert('Login Failed')
         }
         console.log(userData);
+    }
+
+    setUserToken = async (data) => {
+        await AsyncStorage.setItem('token', data.token);
+        await AsyncStorage.setItem('userData', JSON.stringify(data));
+        this.props.navigation.navigate('Home');
     }
 
     onChangeText = (key, val) => {

@@ -12,6 +12,11 @@ target 'Jin' do
 
   pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
 
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
+  pod 'lottie-ios', :path => '../node_modules/lottie-ios'
+
+
   target 'JinTests' do
     inherit! :complete
     # Pods for testing
