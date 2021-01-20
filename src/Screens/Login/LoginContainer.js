@@ -2,10 +2,12 @@
  * LoginContainer
  */
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, AsyncStorage } from 'react-native'
+import {
+    Text, View, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, AsyncStorage, ActivityIndicator
+} from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { withNavigation, NavigationEvents } from "react-navigation";
-import {login} from '../../Services/authService'
+import { login } from '../../Services/authService'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -14,16 +16,19 @@ class LoginContainer extends React.Component {
 
     state = {
         email: '',
-        password: ''
+        password: '',
+        isLoading: false
     }
 
     async login() {
+        this.setState({isLoading: true})
         const userData = await login(this.state);
-        if(userData.isAuth) {
+        if (userData && userData.isAuth) {
             console.log(userData);
             this.setUserToken(userData);
             alert('LoggedIn Successfully')
         } else {
+            this.setState({isLoading: false})
             alert('Login Failed')
         }
         console.log(userData);
@@ -50,16 +55,21 @@ class LoginContainer extends React.Component {
                         <TextInput onChangeText={(val) => this.onChangeText('email', val)} style={styles.placeholderStyles} placeholder={'Enter your email'}></TextInput>
                         <TextInput onChangeText={(val) => this.onChangeText('password', val)} style={styles.placeholderStyles} placeholder={'Password'} secureTextEntry={true}></TextInput>
                     </View>
-
-                    <TouchableOpacity 
-                    style={styles.loginButton}
-                    onPress={() => {this.login()}}
+                        <TouchableOpacity
+                        style={styles.loginButton}
+                        onPress={() => { this.login() }}
                     >
-                        <Text style={styles.loginButtonText}>Login</Text>
+                        {
+                            this.state.isLoading ?
+                            <ActivityIndicator size="small" color="#fff" />
+                            :
+                            <Text style={styles.loginButtonText}>Login</Text>
+                        }
                     </TouchableOpacity>
+ 
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.forgotPwdText}>Are you new to Jin?</Text>
-                        <TouchableOpacity onPress={() => {this.props.navigation.navigate("SignUp")}}>
+                        <TouchableOpacity onPress={() => { this.props.navigation.navigate("SignUp") }}>
                             <Text style={[styles.forgotPwdText, styles.signUpText]}>Signup now</Text>
                         </TouchableOpacity>
                     </View>
@@ -95,7 +105,7 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         color: '#ffffff',
-        fontWeight: '600',
+        // fontWeight: '600',
         fontSize: RFValue(15)
     },
     forgotPwdText: {
@@ -104,7 +114,7 @@ const styles = StyleSheet.create({
     signUpText: {
         color: '#002c73',
         marginLeft: RFValue(10),
-        fontWeight: '600'
+        // fontWeight: '600'
     }
 })
 

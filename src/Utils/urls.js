@@ -1,5 +1,5 @@
 module.exports = {
-    authService: 'http://abbdd48dd929.ngrok.io',
-    loginUrl: `http://abbdd48dd929.ngrok.io/api/login`,
-    signupUrl: `http://abbdd48dd929.ngrok.io/api/register`
+    authService: 'http://2f26f7c0eb35.ngrok.io',
+    loginUrl: `http://2f26f7c0eb35.ngrok.io/api/login`,
+    signupUrl: `http://2f26f7c0eb35.ngrok.io/api/register`
 }
